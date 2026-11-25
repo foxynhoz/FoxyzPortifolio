@@ -62,8 +62,6 @@ button.pri{background:var(--ac);border-color:var(--ac);color:#000;font-weight:70
 .admin h1{font-size:clamp(30px,5vw,42px);margin:0 0 12px}
 .admin p{color:var(--mut);margin:0 0 22px}
 .admin .who{color:var(--fg);font:14px "Space Mono",monospace;overflow-wrap:anywhere}
-.page-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:34px 0 20px}
-.page-bar h1{margin:0;font-size:clamp(30px,5vw,42px)}
 .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin-top:12px}
 .thumbs div{position:relative}
@@ -171,9 +169,7 @@ function charView(c,t,i){
     h("div",{class:"rb-in"},h("div",{class:"bn"},info,ch),h("div",{class:"lbl",style:"margin-top:32px"},t.lArts),c.arts.length?arts:h("p",{class:"empty",style:"margin:0"},t.noRefs))),h("div",{class:"cmy"})]
 }
 function refsView(t){
-  const top=h("div",{class:"page-bar"},h("h1",{},t.refs));
-  if(isAdmin())top.append(h("button",{class:"pri",type:"button",id:"edit-refs"},t.edit));
-  return h("div",{},top,S.cs.flatMap((c,i)=>charView(c,t,i)))
+  return h("div",{},S.cs.flatMap((c,i)=>charView(c,t,i)))
 }
 function charDash(c,i,D,msg,field,repaint){
   const wrap=h("div",{style:"border:1px solid var(--line);border-radius:10px;padding:14px;margin:14px 0"});
@@ -293,6 +289,7 @@ function render(){
   document.documentElement.lang=pt?"pt-BR":"en";
   const key=PAGES[location.hash.slice(1)];
   const nav=h("nav",{},h("a",{href:"#galeria"},t.gallery),h("a",{href:"#referencias"},t.refs),h("a",{href:QUEUE,target:"_blank",rel:"noopener"},t.queue+" ↗"),h("a",{href:"#terms"},t.terms),h("a",{href:"#contato"},t.contact),h("a",{href:"#admin"},t.admin),langToggle());
+  if(key==="refs"&&isAdmin())nav.append(h("button",{class:"pri",type:"button",id:"edit-refs"},t.edit));
   app.append(h("header",{},h("a",{href:"#"},p.logo?h("img",{class:"logo",src:p.logo,alt:p.name}):h("span",{class:"brand"},p.name)),nav));
   if(key==="admin"){app.append(adminView(t))}
   else if(key==="terms"){app.append(tosView(t))}
