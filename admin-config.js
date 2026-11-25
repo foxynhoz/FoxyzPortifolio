@@ -6,12 +6,12 @@
 // 3. Enable Google under Firebase Authentication > Sign-in method.
 export const adminAuthConfig = {
   firebase: {
-    apiKey: "",
-    authDomain: "",
-    projectId: "",
-    storageBucket: "",
-    messagingSenderId: "",
-    appId: ""
+    apiKey: "AIzaSyDX2mThr3bFwS4NjcfUUeUjUnm-ipm_5m8",
+    authDomain: "portifolio-9eb2b.firebaseapp.com",
+    projectId: "portifolio-9eb2b",
+    storageBucket: "portifolio-9eb2b.firebasestorage.app",
+    messagingSenderId: "694873197057",
+    appId: "1:694873197057:web:8b876481dbc16bf39d8e00"
   },
-  allowedEmail: "YOUR_GOOGLE_EMAIL@example.com"
+  allowedEmail: "[removed]"
 };
