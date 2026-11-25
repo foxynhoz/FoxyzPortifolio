@@ -62,6 +62,8 @@ button.pri{background:var(--ac);border-color:var(--ac);color:#000;font-weight:70
 .admin h1{font-size:clamp(30px,5vw,42px);margin:0 0 12px}
 .admin p{color:var(--mut);margin:0 0 22px}
 .admin .who{color:var(--fg);font:14px "Space Mono",monospace;overflow-wrap:anywhere}
+.page-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:34px 0 20px}
+.page-bar h1{margin:0;font-size:clamp(30px,5vw,42px)}
 .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin-top:12px}
 .thumbs div{position:relative}
@@ -126,14 +128,15 @@ const SOC={instagram:"Instagram",behance:"Behance",pinterest:"Pinterest",youtube
 const h=(t,a={},...c)=>{const e=document.createElement(t);for(const k in a){if(k==="class")e.className=a[k];else if(k.startsWith("on"))e[k]=a[k];else e.setAttribute(k,a[k])}c.flat().forEach(x=>e.append(x));return e};
 const url=(v,k)=>{v=(v||"").trim();if(!v)return"";if(k==="instagram"&&v[0]==="@")v="instagram.com/"+v.slice(1);if(!/^https?:\/\//.test(v))v="https://"+v;return v.startsWith("https://")?v:""};
 let owner=false,lang="en";
+const isAdmin=()=>window.portfolioAuth&&window.portfolioAuth.getState().state==="authorised";
 try{const v=localStorage.getItem("lang");if(v==="pt"||v==="en")lang=v}catch(e){}
 const T={
 en:{gallery:"Gallery",refs:"Refs",queue:"Queue",terms:"Terms of Service",contact:"Contact",admin:"Private area",contactH:"Contact & socials",noArt:"The first artworks will appear here soon.",noContact:"Contact details coming soon.",foot:"All artworks are protected by copyright.",soon:"This page is under construction. Content will appear here soon."},
 pt:{gallery:"Galeria",refs:"Refs",queue:"Fila",terms:"Termos de Serviço",contact:"Contato",admin:"Área privada",contactH:"Contato e redes",noArt:"As primeiras obras aparecem aqui em breve.",noContact:"Contatos em breve.",foot:"Todas as obras são protegidas por direitos autorais.",soon:"Esta página está em construção. Em breve, o conteúdo aparece aqui."}};
 const QUEUE="https://trello.com/b/eeGuoYc2/foxyz-comm-tracker";
 const PAGES={referencias:"refs",terms:"terms",admin:"admin"};
-Object.assign(T.en,{lName:"Name:",lInfo:"Infos:",lPal:"Palette",lArts:"Reference art",copy:"Copy palette",copied:"Copied!",copiedTxt:"Copied hex codes",copyFail:"Copy blocked",noImg:"Character image goes here (PNG with transparency)",noRefs:"Reference art will appear here."});
-Object.assign(T.pt,{lName:"Nome:",lInfo:"Infos:",lPal:"Paleta",lArts:"Artes de referência",copy:"Copiar paleta",copied:"Copiado!",copiedTxt:"Códigos hex copiados",copyFail:"Cópia bloqueada",noImg:"A imagem do personagem fica aqui (PNG com transparência)",noRefs:"As artes de referência aparecem aqui."});
+Object.assign(T.en,{lName:"Name:",lInfo:"Infos:",lPal:"Palette",lArts:"Reference art",copy:"Copy palette",copied:"Copied!",copiedTxt:"Copied hex codes",copyFail:"Copy blocked",noImg:"Character image goes here (PNG with transparency)",noRefs:"Reference art will appear here.",edit:"Edit"});
+Object.assign(T.pt,{lName:"Nome:",lInfo:"Infos:",lPal:"Paleta",lArts:"Artes de referência",copy:"Copiar paleta",copied:"Copiado!",copiedTxt:"Códigos hex copiados",copyFail:"Cópia bloqueada",noImg:"A imagem do personagem fica aqui (PNG com transparência)",noRefs:"As artes de referência aparecem aqui.",edit:"Editar"});
 const CD={name:"Foxyz Drackz",quote_en:"Write a short quote for your character here.",quote:"Escreva aqui uma frase curta do seu personagem.",info_en:"General info about the character: species, age, personality…",info:"Infos gerais do personagem: espécie, idade, personalidade…",pal:[{hex:"#2578d4",label:"Eyes"},{hex:"#22d65a",label:"Hands"},{hex:"#d4771e",label:"Fur"},{hex:"#b025d6",label:"Paws"},{hex:"#d62424",label:"Hair"}],img:"",arts:[],bg:{color:"#0b1f27",img:""}};
 const norm=c=>{c=Object.assign({},CD,c||{});c.bg=Object.assign({},CD.bg,c.bg||{});c.pal=(c.pal||[]).map(p=>typeof p==="string"?{hex:p,label:""}:p);c.arts=c.arts||[];return c};
 S.cs=(S.cs&&S.cs.length?S.cs:[S.c]).map(norm);delete S.c;
@@ -167,7 +170,11 @@ function charView(c,t,i){
   return [h("section",{class:"rb"},bg,h("div",{class:"vg t"}),h("div",{class:"vg b"}),
     h("div",{class:"rb-in"},h("div",{class:"bn"},info,ch),h("div",{class:"lbl",style:"margin-top:32px"},t.lArts),c.arts.length?arts:h("p",{class:"empty",style:"margin:0"},t.noRefs))),h("div",{class:"cmy"})]
 }
-function refsView(t){return h("div",{},S.cs.flatMap((c,i)=>charView(c,t,i)))}
+function refsView(t){
+  const top=h("div",{class:"page-bar"},h("h1",{},t.refs));
+  if(isAdmin())top.append(h("button",{class:"pri",type:"button",id:"edit-refs"},t.edit));
+  return h("div",{},top,S.cs.flatMap((c,i)=>charView(c,t,i)))
+}
 function charDash(c,i,D,msg,field,repaint){
   const wrap=h("div",{style:"border:1px solid var(--line);border-radius:10px;padding:14px;margin:14px 0"});
   const cs="width:44px;height:34px;padding:0;border:0;background:none";
