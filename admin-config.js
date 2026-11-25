@@ -1,8 +1,8 @@
 // Firebase web app configuration. These values are safe to expose in a static site,
-// but access is limited by the authorised Google account below.
+// but access is limited by the authorised Firebase user below.
 //
 // 1. Create a Firebase web app and copy its firebaseConfig object here.
-// 2. Replace allowedEmail with the Google account that may access the admin area.
+// 2. Replace allowedUid with the Firebase UID that may access the admin area.
 // 3. Enable Google under Firebase Authentication > Sign-in method.
 export const adminAuthConfig = {
   firebase: {
@@ -13,5 +13,5 @@ export const adminAuthConfig = {
     messagingSenderId: "694873197057",
     appId: "1:694873197057:web:8b876481dbc16bf39d8e00"
   },
-  allowedEmail: "[removed]"
+  allowedUid: "Mqk8pDOvSgaDGBhXs8nFdCy4Gqs2"
 };

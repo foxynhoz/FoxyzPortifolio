@@ -9,8 +9,8 @@ import {
 import { adminAuthConfig } from "./admin-config.js";
 
 const configured = Object.values(adminAuthConfig.firebase).every(Boolean)
-  && adminAuthConfig.allowedEmail
-  && !adminAuthConfig.allowedEmail.includes("YOUR_GOOGLE_EMAIL");
+  && adminAuthConfig.allowedUid
+  && !adminAuthConfig.allowedUid.includes("YOUR_FIREBASE_UID");
 
 let currentUser = null;
 let state = configured ? "loading" : "setup";
@@ -26,7 +26,7 @@ if (configured) {
       if (!user) {
         currentUser = null;
         state = "signed-out";
-      } else if ((user.email || "").toLowerCase() === adminAuthConfig.allowedEmail.toLowerCase()) {
+      } else if (user.uid === adminAuthConfig.allowedUid) {
         currentUser = user;
         state = "authorised";
       } else {
